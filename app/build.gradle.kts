@@ -40,6 +40,7 @@ dependencies {
 
     //icon
     implementation("androidx.compose.material:material-icons-extended")
+    implementation(libs.androidx.navigation.compose)
 
     // ViewModel + Compose
     implementation(libs.lifecycle.viewmodel.compose)
