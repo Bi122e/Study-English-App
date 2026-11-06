@@ -38,6 +38,9 @@ android {
 
 dependencies {
 
+    //icon
+    implementation("androidx.compose.material:material-icons-extended")
+
     // ViewModel + Compose
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.compose)
