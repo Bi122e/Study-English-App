@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.example.studyenglishapp"
-    compileSdk = 34
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.example.studyenglishapp"
-        minSdk = 23
-        targetSdk = 34
+        minSdk = 24
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 
@@ -40,6 +40,7 @@ dependencies {
 
     //icon
     implementation("androidx.compose.material:material-icons-extended")
+    implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
 
     // ViewModel + Compose

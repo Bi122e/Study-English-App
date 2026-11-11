@@ -2,6 +2,7 @@ package com.example.studyenglishapp.ui.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Style
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.MenuBook
@@ -19,6 +20,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.studyenglishapp.ui.flashcard.FlashcardScreen
+import com.example.studyenglishapp.ui.home.HomeScreen
+import com.example.studyenglishapp.ui.profile.ProfileScreen
+import com.example.studyenglishapp.ui.vocabulary.VocabularyScreen
 
 data class BottomNavItem(
 
@@ -44,8 +49,13 @@ fun AppNavigation() {
         ),
         BottomNavItem(
             title = "Flashcard",
-            route = "flashCard",
+            route = "flashcard",
             icon = Icons.Default.Style
+        ),
+        BottomNavItem(
+            title = "Profile",
+            route = "profile",
+            icon = Icons.Default.Person
         ),
     )
 
@@ -104,12 +114,19 @@ fun AppNavigation() {
                 VocabularyScreen()
             }
 
-             composable(route = "home") {
+             composable(route = "profile") {
                 ProfileScreen()
             }
+
+             composable(route = "flashcard") {
+                 FlashcardScreen()
+            }
+
+
 
 
 
         }
     }
 }
+
