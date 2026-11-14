@@ -1,4 +1,4 @@
-package com.example.studyenglishapp.data
+package com.example.studyenglishapp.data.model
 
 data class Category(
     val id: Int,
