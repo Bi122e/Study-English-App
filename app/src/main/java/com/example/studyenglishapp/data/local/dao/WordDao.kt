@@ -39,7 +39,7 @@ interface WordDao {
 
     //them tu vung
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWords(words: List<WordEntity>)
+    suspend fun insertWord(word: WordEntity)
 
     //cap nhat tu vung
     @Update
