@@ -1,5 +1,6 @@
 package com.example.studyenglishapp.ui.vocabulary
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,13 +9,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -26,6 +36,7 @@ import com.example.studyenglishapp.data.repository.WordRepository
 
 @Composable
 fun VocabularyScreen( ) {
+
 
      val context = LocalContext.current.applicationContext
 
@@ -51,7 +62,41 @@ fun VocabularyScreen( ) {
         factory = factory
     )
 
+    var showDialog by remember {
+        mutableStateOf(false)
+    }
+
+    var editingWord by remember {
+        mutableStateOf<WordEntity?>(null)
+    }
+
+    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
+
     val words by viewModel.words.collectAsStateWithLifecycle()
+
+
+    if (showDialog) {
+
+        WordFormDialog(
+            initialWord = editingWord,
+
+            onDismiss = {git
+                showDialog = false
+            },
+
+            onSave = { word ->
+
+                if (editingWord == null) {
+                    viewModel.insertWord(word)
+                } else {
+                    viewModel.updateWord(word)
+                }
+
+                showDialog = false
+            }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,21 +108,59 @@ fun VocabularyScreen( ) {
             style = MaterialTheme.typography.headlineMedium
         )
 
+        Button(
+            onClick = {
+                editingWord = null
+                showDialog = true
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Thêm từ vựng")
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
 
 
         LazyColumn(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
 
+
+
+
+
+            item {
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = searchQuery,
+                    onValueChange = { viewModel.onSearchQueryChange(it) },
+                    placeholder = {
+                        Text("Search word...")
+                    },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search"
+                        )
+                    },
+                    singleLine = true,
+                    shape = RoundedCornerShape(16.dp)
+                )
+            }
 
             items(
                 items = words,
                 key = { it.id }
             ) { word ->
 
-                WordItem(word = word)
-
+                WordItem(
+                    word = word,
+                    onEdit = {
+                        editingWord = word
+                        showDialog = true
+                    }
+                )
             }
         }
 
@@ -141,4 +224,37 @@ fun WordItem(word: WordEntity) {
         }
     }
 
+}
+
+@Composable
+fun WordItem(
+    word: WordEntity,
+    onEdit: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp)
+    ) {
+
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+
+            Text(
+                text = word.word,
+                style = MaterialTheme.typography.titleLarge
+            )
+
+            Text(text = word.meaning)
+
+            Text(text = word.pronunciation)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            TextButton(onClick = onEdit) {
+                Text("Chỉnh sửa")
+            }
+        }
+    }
 }

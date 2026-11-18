@@ -13,7 +13,7 @@ class VocabularyViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
         if (modelClass.isAssignableFrom(
-                VocabularyViewModelFactory::class.java
+                VocabularyViewModel::class.java
         )) {
             @Suppress("UNCHECKED_CAST")
             return VocabularyViewModel(repository) as T
